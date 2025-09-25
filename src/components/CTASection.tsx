@@ -31,7 +31,7 @@ const CTASection = () => {
   ];
 
   return (
-    <section className="section-padding gradient-primary">
+    <section id="contacts" className="section-padding gradient-primary">
       <div className="container-custom">
         <div className="max-w-5xl mx-auto text-center">
           {/* Main Headline */}

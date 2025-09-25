@@ -51,7 +51,7 @@ const ProblemSolutionSection = () => {
   ];
 
   return (
-    <section className="section-padding bg-background-soft">
+    <section id="about" className="section-padding bg-background-soft">
       <div className="container-custom">
         {/* Problems Section */}
         <div className="text-center mb-16">
@@ -63,7 +63,7 @@ const ProblemSolutionSection = () => {
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
           {problems.map((problem, index) => (
             <div key={index} className="card-feature bg-red-50 border-l-4 border-l-destructive">
-              <AlertTriangle className="h-8 w-8 text-destructive mb-4" />
+              <AlertTriangle className="h-8 w-8 text-destructive" />
               <h3 className="text-xl font-semibold text-foreground mb-3">{problem.title}</h3>
               <p className="text-foreground-muted leading-relaxed">{problem.description}</p>
             </div>

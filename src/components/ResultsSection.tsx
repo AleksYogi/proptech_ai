@@ -38,7 +38,7 @@ const ResultsSection = () => {
   );
 
   return (
-    <section className="section-padding bg-background-soft">
+    <section id="results" className="section-padding bg-background-soft">
       <div className="container-custom">
         {/* Header */}
         <div className="text-center mb-16">

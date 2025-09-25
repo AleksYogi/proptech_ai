@@ -35,7 +35,7 @@ const AdvantagesSection = () => {
   ];
 
   return (
-    <section className="section-padding">
+    <section id="features" className="section-padding">
       <div className="container-custom">
         {/* Header */}
         <div className="text-center mb-16">

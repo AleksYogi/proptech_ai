@@ -8,16 +8,16 @@ const HeroSection = () => {
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Content */}
-          <div className="space-y-8 animate-fade-up">
+          <div className="space-y-8">
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-primary leading-tight">
-                Proptech_ai
+                Proptech AI
               </h1>
               <p className="text-xl lg:text-2xl text-secondary font-medium">
                 сервис автоматизации для брокеров и агентств недвижимости
               </p>
               <p className="text-lg text-foreground-muted leading-relaxed">
-                Выйди из операционки, забудь о холодных звонках и пустых показах
+                Выйди из операционки, забудь об отказах, холодных звонках и пустых показов
               </p>
             </div>
 
@@ -59,7 +59,7 @@ const HeroSection = () => {
           </div>
 
           {/* Right Image */}
-          <div className="relative animate-fade-up lg:animate-scale-in">
+          <div className="relative lg:animate-scale-in">
             <div className="relative overflow-hidden rounded-xl shadow-hero">
               <img
                 src={heroWorkspace}
