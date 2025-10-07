@@ -11,8 +11,7 @@ const Header = () => {
     { name: "Возможности", href: "features" },
     { name: "Результаты", href: "results" },
     { name: "Тарифы", href: "pricing" },
-    { name: "Контакты", href: "contacts" },
-  ];
+ ];
 
   const handleScrollTo = (sectionId) => {
     const section = document.getElementById(sectionId);
@@ -43,18 +42,10 @@ const Header = () => {
           </nav>
           <div className="hidden lg:flex items-center space-x-4">
             <Button
-              variant="outline"
-              size="sm"
-              onClick={() => window.open("https://t.me/aleksyogi", "_blank")}
-              className="btn-outline"
-            >
-              Контакты
-            </Button>
-            <Button
-              onClick={() => window.open("https://t.me/Propertyhubai_bot", "_blank")}
+              onClick={() => window.open("https://t.me/aleksyogi?text=Здравствуйте,%20мне%20интересно%20подробней%20узнать,%20как%20ИИ-агент%20может%20помочь%20в%20том,%20что%20бы%20работать%20меньше,%20а%20зарабатывать%20больше!", "_blank")}
               className="btn-primary"
             >
-              Получить демо
+              Получить аудит бесплатно
             </Button>
           </div>
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 text-foreground-muted hover:text-primary">
@@ -77,17 +68,10 @@ const Header = () => {
             <div className="mt-6 pt-6 border-t border-border space-y-4">
               <div className="flex flex-col space-y-2">
                 <Button
-                  variant="outline"
-                  onClick={() => window.open("https://t.me/aleksyogi", "_blank")}
-                  className="btn-outline w-full justify-center"
-                >
-                  Контакты
-                </Button>
-                <Button
-                  onClick={() => window.open("https://t.me/Propertyhubai_bot", "_blank")}
+                  onClick={() => window.open("https://t.me/aleksyogi?text=Здравствуйте,%20мне%20интересно%20подробней%20узнать,%20как%20ИИ-агент%20может%20помочь%20в%20том,%20что%20бы%20работать%20меньше,%20а%20зарабатывать%20больше!", "_blank")}
                   className="btn-primary w-full justify-center"
                 >
-                  Получить демо
+                  Получить аудит бесплатно
                 </Button>
               </div>
             </div>

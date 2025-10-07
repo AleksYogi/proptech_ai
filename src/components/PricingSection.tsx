@@ -57,7 +57,7 @@ const PricingSection = () => {
                 <span className="font-semibold text-secondary">Готовое решение</span>
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-2">«Под ключ»</h3>
-              <div className="text-4xl font-bold text-primary">75,000 ₽</div>
+              <div className="text-4xl font-bold text-primary">75 000 ₽</div>
               <div className="text-foreground-muted">единоразово</div>
             </div>
 
@@ -71,8 +71,8 @@ const PricingSection = () => {
               ))}
             </div>
 
-            <Button 
-              onClick={() => window.open("https://t.me/proptech_ai_bot", "_blank")}
+            <Button
+              onClick={() => window.open("https://t.me/aleksyogi?text=Здравствуйте,%20хочу%20заказать%20ИИ-агента%20%22под%20ключ%22,%20что%20для%20этого%20нужно?!", "_blank")}
               className="btn-secondary w-full"
             >
               Заказать решение
@@ -87,7 +87,7 @@ const PricingSection = () => {
                 <span className="font-semibold text-primary">Опционально</span>
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-2">Ежемесячное обслуживание</h3>
-              <div className="text-4xl font-bold text-primary">10,000 ₽</div>
+              <div className="text-4xl font-bold text-primary">15 000 ₽</div>
               <div className="text-foreground-muted">в месяц</div>
             </div>
 
@@ -101,12 +101,13 @@ const PricingSection = () => {
               ))}
             </div>
 
-            <Button 
+            <Button
               variant="outline"
-              onClick={() => window.open("https://t.me/aleksyogi", "_blank")}
+              onClick={() => window.open("https://t.me/aleksyogi?text=Добрый%20день.%20Меня%20интересует%20AI-диагностика%20нашей%20воронки%20продаж.%20Хотел%20бы%20понять,%20как%20мы%20можем%20повысить%20её%20эффективность%20с%20помощью%20ваших%20решений.", "_blank")}
               className="btn-outline w-full"
+              style={{ display: 'none' }}
             >
-              Узнать подробнее
+              Получить план роста
             </Button>
           </div>
 
@@ -138,11 +139,11 @@ const PricingSection = () => {
               ))}
             </div>
 
-            <Button 
-              onClick={() => window.open("https://t.me/proptech_ai_bot", "_blank")}
+            <Button
+              onClick={() => window.open("https://t.me/aleksyogi?text=Добрый%20день.%20Меня%20интересует%20AI-диагностика%20нашей%20воронки%20продаж.%20Хотел%20бы%20понять,%20как%20мы%20можем%20повысить%20её%20эффективность%20с%20помощью%20ваших%20решений.", "_blank")}
               className="btn-primary w-full group"
             >
-              Получить персональный расчет
+              Получить план роста
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
@@ -165,12 +166,12 @@ const PricingSection = () => {
 
           {/* CTA */}
           <div className="text-center mt-8">
-            <Button 
+            <Button
               size="lg"
-              onClick={() => window.open("https://t.me/proptech_ai_bot", "_blank")}
+              onClick={() => window.open("https://t.me/aleksyogi?text=Добрый%20день.%20Меня%20интересует%20AI-диагностика%20нашей%20воронки%20продаж.%20Хотел%20бы%20понять,%20как%20мы%20можем%20повысить%20её%20эффективность%20с%20помощью%20ваших%20решений.", "_blank")}
               className="btn-primary text-xl px-12 py-6 group"
             >
-              Получить персональный расчет
+              Получить план роста
               <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>

@@ -25,8 +25,8 @@ const CTASection = () => {
     {
       icon: MessageCircle,
       label: "Telegram",
-      value: "@AleksYogi", 
-      href: "https://t.me/aleksyogi"
+      value: "@AleksYogi",
+      href: "https://t.me/aleksyogi?text=Здравствуйте!%20Хочу%20узнать%20больше%20о%20вашем%20ИИ-агенте%20для%20недвижимости."
     }
   ];
 
@@ -74,9 +74,9 @@ const CTASection = () => {
               Начните прямо сейчас:
             </h3>
             
-            <Button 
+            <Button
               size="lg"
-              onClick={() => window.open("https://t.me/aleksyogi", "_blank")}
+              onClick={() => window.open("https://t.me/aleksyogi?text=Здравствуйте!%20Хочу%20узнать%20больше%20о%20вашем%20ИИ-агенте%20для%20недвижимости.", "_blank")}
               className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 text-xl px-12 py-6 rounded-xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 group mb-4"
             >
               🚀 Запись на консультацию
