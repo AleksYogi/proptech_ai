@@ -6,17 +6,17 @@ const ProblemSolutionSection = () => {
     {
       icon: Clock,
       title: "Потеря лидов",
-      description: "из-за долгого ответа, незнания языка клиента или отсутствия актуальной информации"
+      description: "Из-за долгого ответа, незнания языка клиента, отсутствия актуальной информации или графика работы."
     },
     {
       icon: TrendingDown,
       title: "Пустые встречи",
-      description: "Трата времени и сил на холодные звонки, пустые встречи и общение с клиентами, которые никогда не купят"
+      description: "Трата времени и сил на холодные звонки, ответы на одни и те же вопросы и общение с клиентами, которые никогда не купят"
     },
     {
       icon: Users,
       title: "Операционная рутина",
-      description: "ручная обработка заявок, заполнение CRM и бесплатные консультации"
+      description: "Ручная обработка заявок, заполнение CRM и бесплатные консультации"
     }
   ];
 
@@ -30,23 +30,23 @@ const ProblemSolutionSection = () => {
   const solutions = [
     {
       icon: CheckCircle,
-      title: "Мгновенная реакция",
-      description: "Отвечает как живой человек в течение 30 секунд на любое обращение и удерживает внимание потенциального покупателя профессиональным диалогом"
+      title: "Мгновенная реакция 24/7 и рост конверсии",
+      description: "Отвечает на 100% обращений за 30 секунд, в любое время суток. Это критически важно, так как кейсы показывают: сокращение времени ответа с часов до секунд увеличивает количество закрытых сделок на 35%."
     },
     {
       icon: Users,
-      title: "Умная квалификация",
-      description: "Определяет реальный бюджет клиента, выясняет цели покупки и готовность к сделке через тактичные вопросы"
+      title: "Экономия времени агентов до 90%",
+      description: "Забирает на себя рутинные задачи, автоматизируя до 90% ручного труда. Это высвобождает десятки часов в неделю, позволяя агентам фокусироваться на переговорах и закрытии сделок, а не на административной работе."
     },
     {
       icon: Globe,
-      title: "Экспертная консультация",
-      description: "Консультирует по проектам, тонкостям региона, юридическим аспектам покупки недвижимости и оценивает готовность клиента"
+      title: "Фильтрация лидов: +60% качественных клиентов.",
+      description: "Агент выступает интеллектуальным фильтром: он квалифицирует лидов по бюджету, целям и срокам. В отдел продаж попадают только «прогретые» клиенты, что увеличивает количество лидов, готовых к продаже (SQL), на 60%."
     },
     {
       icon: Clock,
-      title: "Автоматизация данных",
-      description: "Заносит все данные в систему, распределяет клиентов по приоритетности и всю информацию передает менеджеру"
+      title: "Снижение операционных расходов",
+      description: "Способен одновременно обрабатывать тысячи диалогов, что позволяет масштабировать продажи без найма дополнительных сотрудников колл-центра или младших менеджеров."
     }
   ];
 
@@ -105,15 +105,6 @@ const ProblemSolutionSection = () => {
               </div>
             ))}
 
-            {/* Additional Benefits */}
-            <div className="mt-8 p-6 bg-secondary/10 rounded-xl border-l-4 border-l-secondary">
-              <h4 className="font-semibold text-lg text-primary mb-3">Дополнительные возможности:</h4>
-              <ul className="space-y-2 text-foreground-muted">
-                <li>• Функционирует 24/7 без выходных, захватывая лидов в любое время</li>
-                <li>• Предоставляет честную информацию о рынке, рисках и возможностях</li>
-                <li>• Мониторит важные сайты и остается в курсе всех новых событий</li>
-              </ul>
-            </div>
           </div>
 
           {/* AI Interface Image */}
@@ -130,6 +121,57 @@ const ProblemSolutionSection = () => {
             {/* Floating Feature Badge */}
             <div className="absolute -top-4 -right-4 bg-secondary text-secondary-foreground px-6 py-3 rounded-full font-semibold shadow-lg">
               ИИ 24/7
+            </div>
+          </div>
+        </div>
+
+        {/* Full-width Additional Benefits Section */}
+        <div className="mt-20 container-custom">
+          <div className="p-8 bg-gradient-to-r from-secondary/20 to-primary/10 rounded-2xl">
+            <h3 className="text-3xl font-bold text-center text-primary mb-6">Полный спектр возможностей ИИ-агента</h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h4 className="font-semibold text-lg text-primary mb-4">Основные функции:</h4>
+                <ul className="space-y-3 text-foreground-muted">
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                    <span>ИИ-ассистент для телефонных переговоров</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                    <span>Автоматическая квалификация лидов</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                    <span>Интеграция с CRM системами</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                    <span>Многоязычная поддержка</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold text-lg text-primary mb-4">Дополнительные возможности:</h4>
+                <ul className="space-y-3 text-foreground-muted">
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                    <span>Создание контент-завода для соцсетей</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                    <span>Оптимизация под ИИ-поиск</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                    <span>Анализ и отчетность по эффективности</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-secondary mr-3 mt-0.5 flex-shrink-0" />
+                    <span>Персонализированные стратегии взаимодействия</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ const ProcessSection = () => {
       title: "Заявка и анализ",
       duration: "День 1",
       description: "Консультация, анализ вашей ситуации, определение ключевых аспектов для ИИ агента",
+      result: "Чёткий план работы и техническое задание для будущего агента",
       icon: Calendar,
       color: "text-secondary"
     },
@@ -24,6 +25,7 @@ const ProcessSection = () => {
       title: "Запуск и обучение",
       duration: "Дни 6-7",
       description: "Подключение к каналам связи, обучение команды, первые тесты с клиентами",
+      result: "Полноценно работающий агент и обученная команда",
       icon: Rocket,
       color: "text-accent"
     }
