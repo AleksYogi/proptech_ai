@@ -37,34 +37,29 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center space-x-3">
             <img src={logoUnicorn} alt="Proptech_ai" className="h-10 w-auto" />
-            <span className="text-2xl font-bold text-primary">Proptech AI</span>
+            <a href="/" className="text-2xl font-bold text-primary hover:underline">Proptech AI</a>
           </div>
           <nav className="hidden lg:flex items-center space-x-8">
-            {navigation.map((item) => {
-              if (item.href === "/blog") {
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className="text-foreground-muted hover:text-primary transition-colors duration-200 font-medium"
-                  >
-                    {item.name}
-                  </Link>
-                );
-              } else {
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => handleNavigation(item.href)}
-                    className="text-foreground-muted hover:text-primary transition-colors duration-200 font-medium"
-                  >
-                    {item.name}
-                  </button>
-                );
-              }
+            {navigation.filter(item => item.href !== "/blog").map((item) => {
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => handleNavigation(item.href)}
+                  className="text-foreground-muted hover:text-primary transition-colors duration-200 font-medium"
+                >
+                  {item.name}
+                </button>
+              );
             })}
           </nav>
           <div className="hidden lg:flex items-center space-x-4">
+            <Button
+              asChild
+              variant="outline"
+              className="text-primary border-primary hover:bg-primary hover:text-white transition-colors duration-200"
+            >
+              <Link to="/blog">Блог</Link>
+            </Button>
             <Button
               onClick={() => window.open("https://t.me/aleksyogi?text=Здравствуйте,%20мне%20интересно%20подробней%20узнать,%20как%20ИИ-агент%20может%20помочь%20в%20том,%20что%20бы%20работать%20меньше,%20а%20зарабатывать%20больше!", "_blank")}
               className="btn-primary"
@@ -79,33 +74,28 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden py-6 border-t border-border">
             <nav className="space-y-4">
-              {navigation.map((item) => {
-                if (item.href === "/blog") {
-                  return (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className="block text-foreground-muted hover:text-primary transition-colors font-medium"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  );
-                } else {
-                  return (
-                    <button
-                      key={item.name}
-                      onClick={() => handleNavigation(item.href)}
-                      className="block text-foreground-muted hover:text-primary transition-colors font-medium"
-                    >
-                      {item.name}
-                    </button>
-                  );
-                }
+              {navigation.filter(item => item.href !== "/blog").map((item) => {
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavigation(item.href)}
+                    className="block text-foreground-muted hover:text-primary transition-colors font-medium"
+                  >
+                    {item.name}
+                  </button>
+                );
               })}
             </nav>
             <div className="mt-6 pt-6 border-t border-border space-y-4">
               <div className="flex flex-col space-y-2">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="text-primary border-primary hover:bg-primary hover:text-white transition-colors duration-200 w-full justify-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Link to="/blog">Блог</Link>
+                </Button>
                 <Button
                   onClick={() => window.open("https://t.me/aleksyogi?text=Здравствуйте,%20мне%20интересно%20подробней%20узнать,%20как%20ИИ-агент%20может%20помочь%20в%20том,%20что%20бы%20работать%20меньше,%20а%20зарабатывать%20больше!", "_blank")}
                   className="btn-primary w-full justify-center"

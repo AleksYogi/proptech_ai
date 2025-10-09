@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import BlogCard from '@/components/BlogCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import BlogHeader from '@/components/BlogHeader';
 
 const BlogIndex = () => {
   const { posts, loading, error } = useBlogPosts();
@@ -32,6 +33,8 @@ const BlogIndex = () => {
           })}
         </script>
       </Helmet>
+      
+      <BlogHeader />
       
       <div className="container-custom py-12">
         <header className="mb-12 text-center">

@@ -9,6 +9,7 @@ import ArticleSEO from '@/components/ArticleSEO';
 import ReactMarkdown from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import BlogHeader from '@/components/BlogHeader';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -93,10 +94,12 @@ const BlogPost = () => {
     },
   };
 
-  return (
+ return (
     <div className="min-h-screen bg-background">
       {/* SEO мета-теги для статьи */}
       <ArticleSEO post={post} />
+      
+      <BlogHeader />
       
       <div className="container-custom py-12">
         <Button
