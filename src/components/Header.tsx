@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import logoUnicorn from "@/assets/logo-unicorn.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigation = [
-    { name: "О продукте", href: "about" },
-    { name: "Возможности", href: "features" },
-    { name: "Результаты", href: "results" },
-    { name: "Тарифы", href: "pricing" },
- ];
+    { name: "О продукте", href: "/#about" },
+    { name: "Возможности", href: "/#features" },
+    { name: "Блог", href: "/blog" },  // Новая ссылка на блог
+    { name: "Результаты", href: "/#results" },
+    { name: "Тарифы", href: "/#pricing" },
+  ];
 
   const handleScrollTo = (sectionId) => {
     const section = document.getElementById(sectionId);
@@ -19,6 +21,14 @@ const Header = () => {
       section.scrollIntoView({ behavior: "smooth" });
       setIsMenuOpen(false);
     }
+  };
+
+  const handleNavigation = (href) => {
+    if (href.startsWith("/#")) {
+      const sectionId = href.split("#")[1];
+      handleScrollTo(sectionId);
+    }
+    setIsMenuOpen(false);
   };
 
   return (
@@ -30,15 +40,29 @@ const Header = () => {
             <span className="text-2xl font-bold text-primary">Proptech AI</span>
           </div>
           <nav className="hidden lg:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => handleScrollTo(item.href)}
-                className="text-foreground-muted hover:text-primary transition-colors duration-200 font-medium"
-              >
-                {item.name}
-              </button>
-            ))}
+            {navigation.map((item) => {
+              if (item.href === "/blog") {
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="text-foreground-muted hover:text-primary transition-colors duration-200 font-medium"
+                  >
+                    {item.name}
+                  </Link>
+                );
+              } else {
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => handleNavigation(item.href)}
+                    className="text-foreground-muted hover:text-primary transition-colors duration-200 font-medium"
+                  >
+                    {item.name}
+                  </button>
+                );
+              }
+            })}
           </nav>
           <div className="hidden lg:flex items-center space-x-4">
             <Button
@@ -55,15 +79,30 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden py-6 border-t border-border">
             <nav className="space-y-4">
-              {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => handleScrollTo(item.href)}
-                  className="block text-foreground-muted hover:text-primary transition-colors font-medium"
-                >
-                  {item.name}
-                </button>
-              ))}
+              {navigation.map((item) => {
+                if (item.href === "/blog") {
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className="block text-foreground-muted hover:text-primary transition-colors font-medium"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                } else {
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => handleNavigation(item.href)}
+                      className="block text-foreground-muted hover:text-primary transition-colors font-medium"
+                    >
+                      {item.name}
+                    </button>
+                  );
+                }
+              })}
             </nav>
             <div className="mt-6 pt-6 border-t border-border space-y-4">
               <div className="flex flex-col space-y-2">
