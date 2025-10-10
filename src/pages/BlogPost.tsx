@@ -97,7 +97,7 @@ const BlogPost = () => {
  return (
     <div className="min-h-screen bg-background">
       {/* SEO мета-теги для статьи */}
-      <ArticleSEO post={post} />
+      <ArticleSEO post={post} baseUrl="https://proptech-ai.ru" />
       
       <BlogHeader />
       

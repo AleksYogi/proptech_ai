@@ -6,9 +6,12 @@ interface ArticleSEOProps {
   baseUrl?: string;
 }
 
-const ArticleSEO: React.FC<ArticleSEOProps> = ({ post, baseUrl = 'http://localhost:8080' }) => {
+const ArticleSEO: React.FC<ArticleSEOProps> = ({ post, baseUrl = 'https://proptech-ai.ru' }) => {
   const articleUrl = `${baseUrl}/blog/${post.slug}`;
   const imageUrl = post.image ? `${baseUrl}${post.image}` : `${baseUrl}/placeholder.svg`;
+  
+  // Генерация тегов для статьи
+  const articleTags = post.tags ? post.tags.join(', ') : '';
 
   return (
     <Helmet>
@@ -65,7 +68,7 @@ const ArticleSEO: React.FC<ArticleSEOProps> = ({ post, baseUrl = 'http://localho
           "datePublished": post.date,
           "dateModified": post.date,
           "articleSection": post.category,
-          "keywords": post.tags.join(', ')
+          "keywords": articleTags
         })}
       </script>
     </Helmet>

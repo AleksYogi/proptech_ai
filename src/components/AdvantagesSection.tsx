@@ -1,7 +1,8 @@
 import { Badge, Brain, Database, Globe, Shield, TrendingUp, Zap } from "lucide-react";
+import { Helmet } from 'react-helmet-async';
 
 const AdvantagesSection = () => {
-  const advantages = [
+ const advantages = [
     {
       icon: Badge,
       title: "100% точность",
@@ -15,7 +16,7 @@ const AdvantagesSection = () => {
     {
       icon: Database,
       title: "База знаний",
-      description: "Постоянно обновляемая информация о проектах, объектах, ценах и юридических нюансах."
+      description: "Постояно обновляемая информация о проектах, объектах, ценах и юридических нюансах."
     },
     {
       icon: Globe,
@@ -35,79 +36,94 @@ const AdvantagesSection = () => {
   ];
 
   return (
-    <section id="features" className="section-padding">
-      <div className="container-custom">
+    <>
+      <Helmet>
+        <title>Преимущества ИИ-агента для недвижимости | Proptech AI</title>
+        <meta name="description" content="Преимущества ИИ-агента для агентств недвижимости: 100% точность, масштабируемость, автоматический сбор данных, повышение доверия клиентов." />
+        <meta name="keywords" content="преимущества ИИ-агента, автоматизация недвижимости, масштабируемость, точность, CRM интеграция, повышение доверия" />
+        <link rel="canonical" href="https://proptech-ai.ru/#features" />
+        <meta property="og:title" content="Преимущества ИИ-агента для недвижимости | Proptech AI" />
+        <meta property="og:description" content="Преимущества ИИ-агента для агентств недвижимости: 10% точность, масштабируемость, автоматический сбор данных, повышение доверия клиентов." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://proptech-ai.ru/#features" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Преимущества ИИ-агента для недвижимости | Proptech AI" />
+        <meta name="twitter:description" content="Преимущества ИИ-агента для агентств недвижимости: 10% точность, масштабируемость, автоматический сбор данных, повышение доверия клиентов." />
+      </Helmet>
+      <section id="features" className="section-padding">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-primary mb-6">
-            Преимущества ИИ-агента
-          </h2>
-          <p className="text-xl text-foreground-muted max-w-4xl mx-auto leading-relaxed">
-            Это новейшая технология, которая только вышла на рынок и еще мало кем используется, 
-            что дает вам огромное конкурентное преимущество.
-          </p>
-        </div>
+        <div className="container-custom">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold text-primary mb-6">
+              Преимущества ИИ-агента
+            </h2>
+            <p className="text-xl text-foreground-muted max-w-4xl mx-auto leading-relaxed">
+              Это новейшая технология, которая только вышла на рынок и еще мало кем используется, 
+              что дает вам огромное конкурентное преимущество.
+            </p>
+          </div>
 
-        {/* Advantages Grid */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
-          {advantages.map((advantage, index) => (
-            <div key={index} className="card-feature hover-lift group">
-              <div className="flex items-center justify-center w-16 h-16 bg-secondary/20 rounded-xl mb-6 group-hover:bg-secondary/30 transition-colors">
-                <advantage.icon className="h-8 w-8 text-secondary" />
+          {/* Advantages Grid */}
+          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+            {advantages.map((advantage, index) => (
+              <div key={index} className="card-feature hover-lift group">
+                <div className="flex items-center justify-center w-16 h-16 bg-secondary/20 rounded-xl mb-6 group-hover:bg-secondary/30 transition-colors">
+                  <advantage.icon className="h-8 w-8 text-secondary" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">{advantage.title}</h3>
+                <p className="text-foreground-muted leading-relaxed">{advantage.description}</p>
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-3">{advantage.title}</h3>
-              <p className="text-foreground-muted leading-relaxed">{advantage.description}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {/* Main Content Block */}
-        <div className="bg-card rounded-xl p-8 lg:p-12 shadow-lg card-eco">
-          <div className="max-w-5xl mx-auto space-y-8">
-            <div className="flex items-center space-x-4 mb-6">
-              <Zap className="h-10 w-10 text-secondary" />
-              <h3 className="text-2xl lg:text-3xl font-bold text-primary">
-                Умный помощник нового поколения
-              </h3>
-            </div>
-            
-            <p className="text-lg text-card-foreground leading-relaxed">
-               Происходит фундаментальный сдвиг парадигмы от простого увеличения количества лидов к повышению качества взаимодействия. Цель больше не сводится к получению имени и номера телефона; она заключается в передаче менеджеру предварительно квалифицированного, высокомотивированного потенциального клиента с богатой историей общения.
-            </p>
-            
-            <p className="text-lg text-card-foreground leading-relaxed">
-                Агент действует как сложный фильтр, гарантируя, что менеджер тратит время только на тех клиентов, которые прошли проверку на соответствие бюджету, срокам и намерениям.
-            </p>
-
-            {/* Key Features */}
-            <div className="grid md:grid-cols-2 gap-6 mt-8">
-              <div className="bg-background-soft rounded-lg p-6">
-                <h4 className="font-semibold text-primary mb-3">Качество обслуживания</h4>
-                <p className="text-foreground-muted">
-                  Кардинально увеличивает качество обслуживания клиентов и позволяет масштабировать бизнес 
-                  без пропорционального роста расходов на персонал
-                </p>
+          {/* Main Content Block */}
+          <div className="bg-card rounded-xl p-8 lg:p-12 shadow-lg card-eco">
+            <div className="max-w-5xl mx-auto space-y-8">
+              <div className="flex items-center space-x-4 mb-6">
+                <Zap className="h-10 w-10 text-secondary" />
+                <h3 className="text-2xl lg:text-3xl font-bold text-primary">
+                  Умный помощник нового поколения
+                </h3>
               </div>
               
-              <div className="bg-background-soft rounded-lg p-6">
-                <h4 className="font-semibold text-primary mb-3">Подготовка к будущему</h4>
-                <p className="text-foreground-muted">
-                  Оптимизируем работу под новые технологии: готовим бизнес к эре ИИ-покупателей, 
-                  которые уже используют ChatGPT для поиска недвижимости
+              <p className="text-lg text-card-foreground leading-relaxed">
+                 Происходит фундаментальный сдвиг парадигмы от простого увеличения количества лидов к повышению качества взаимодействия. Цель больше не сводится к получению имени и номера телефона; она заключается в передаче менеджеру предварительно квалифицированного, высокомотивированного потенциального клиента с богатой историей общения.
+              </p>
+              
+              <p className="text-lg text-card-foreground leading-relaxed">
+                  Агент действует как сложный фильтр, гарантируя, что менеджер тратит время только на тех клиентов, которые прошли проверку на соответствие бюджету, срокам и намерениям.
+              </p>
+
+              {/* Key Features */}
+              <div className="grid md:grid-cols-2 gap-6 mt-8">
+                <div className="bg-background-soft rounded-lg p-6">
+                  <h4 className="font-semibold text-primary mb-3">Качество обслуживания</h4>
+                  <p className="text-foreground-muted">
+                    Кардинально увеличивает качество обслуживания клиентов и позволяет масштабировать бизнес 
+                    без пропорционального роста расходов на персонал
+                  </p>
+                </div>
+                
+                <div className="bg-background-soft rounded-lg p-6">
+                  <h4 className="font-semibold text-primary mb-3">Подготовка к будущему</h4>
+                  <p className="text-foreground-muted">
+                    Оптимизируем работу под новые технологии: готовим бизнес к эре ИИ-покупателей, 
+                    которые уже используют ChatGPT для поиска недвижимости
+                  </p>
+                </div>
+              </div>
+
+              {/* Bottom CTA */}
+              <div className="text-center mt-8 p-6 bg-secondary/10 rounded-lg border-l-4 border-l-secondary">
+                <p className="text-lg font-semibold text-primary">
+                  Это не просто автоматизация — это полная трансформация бизнес-модели под будущее рынка недвижимости
                 </p>
               </div>
-            </div>
-
-            {/* Bottom CTA */}
-            <div className="text-center mt-8 p-6 bg-secondary/10 rounded-lg border-l-4 border-l-secondary">
-              <p className="text-lg font-semibold text-primary">
-                Это не просто автоматизация — это полная трансформация бизнес-модели под будущее рынка недвижимости
-              </p>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
