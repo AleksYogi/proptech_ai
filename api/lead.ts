@@ -45,16 +45,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     let telegramError = null;
     
     if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
+      console.log('Sending Telegram message with token:', process.env.TELEGRAM_BOT_TOKEN.substring(0, 10) + '...');
+      console.log('Sending Telegram message to chat ID:', process.env.TELEGRAM_CHAT_ID);
       const telegramResponse = await sendTelegramMessage(sanitizedData);
       if (telegramResponse.success) {
         telegramSent = true;
+        console.log('Telegram message sent successfully');
       } else {
         telegramError = telegramResponse.error;
         console.error('Telegram sending failed:', telegramError);
       }
     } else {
       telegramError = 'Telegram credentials not configured';
-      console.error('Telegram credentials not configured');
+      console.error('Telegram credentials not configured. TELEGRAM_BOT_TOKEN:', !!process.env.TELEGRAM_BOT_TOKEN, 'TELEGRAM_CHAT_ID:', !!process.env.TELEGRAM_CHAT_ID);
     }
 
     // If Telegram failed, return error
@@ -89,8 +92,7 @@ async function sendTelegramMessage(data: LeadData) {
       },
       body: JSON.stringify({
         chat_id: process.env.TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML'
+        text: message
       }),
     });
 
