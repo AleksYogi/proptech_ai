@@ -25,8 +25,7 @@ const LeadCaptureSection = () => {
               Готовы автоматизировать ваш бизнес?
             </h2>
             <p className="text-xl text-foreground-muted max-w-3xl mx-auto">
-              Оставьте заявку, и наш специалист свяжется с вами в течение 24 часов, чтобы обсудить, 
-              как ИИ-агент может увеличить конверсию вашей команды на 40% и сэкономить до 30% времени менеджеров.
+              Закажите бесплатный аудит вашей воронки продаж. Покажем точные цифры: сколько лидов вы теряете сейчас и сколько заработаете с ИИ-автоматизацией.
             </p>
           </div>
 
@@ -39,9 +38,9 @@ const LeadCaptureSection = () => {
                     <Phone className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground mb-2">Быстрый контакт</h3>
+                    <h3 className="font-bold text-lg text-foreground mb-2">Выявим слабые места</h3>
                     <p className="text-foreground-muted">
-                      Наш специалист свяжется с вами в течение 24 часов для обсуждения деталей внедрения ИИ-агента.
+                      Проанализируем вашу текущую воронку и найдем точки потери клиентов.
                     </p>
                   </div>
                 </div>
@@ -53,9 +52,9 @@ const LeadCaptureSection = () => {
                     <Users className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground mb-2">Персональный подход</h3>
+                    <h3 className="font-bold text-lg text-foreground mb-2">Покажем цифры прибыли</h3>
                     <p className="text-foreground-muted">
-                      Мы адаптируем ИИ-агента под специфику вашего бизнеса и целевую аудиторию.
+                      Рассчитаем конкретный рост выручки и экономию для вашего агентства.
                     </p>
                   </div>
                 </div>
@@ -67,9 +66,9 @@ const LeadCaptureSection = () => {
                     <Mail className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-foreground mb-2">Детальный анализ</h3>
+                    <h3 className="font-bold text-lg text-foreground mb-2">Создадим план запуска</h3>
                     <p className="text-foreground-muted">
-                      Получите персональный расчет экономии и роста конверсии для вашего агентства.
+                      Получите пошаговый план автоматизации ваших процессов.
                     </p>
                   </div>
                 </div>
