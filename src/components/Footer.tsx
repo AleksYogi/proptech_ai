@@ -32,10 +32,11 @@ const Footer = () => {
   ];
 
   const legalLinks = [
-    { name: "Политика конфиденциальности", href: "#privacy" },
-    { name: "Договор оферты", href: "#terms" },
-    { name: "Пользовательское соглашение", href: "#agreement" }
-  ];
+    { name: "Политика конфиденциальности", href: "/privacy" },
+    { name: "Договор оферты", href: "/terms" },
+    { name: "Пользовательское соглашение", href: "/agreement" },
+    { name: "ДОГОВОР О НЕРАЗГЛАШЕНИИ (NDA)", href: "/nda" }
+ ];
 
   return (
     <footer className="bg-primary text-primary-foreground">
