@@ -7,6 +7,10 @@ interface LeadData {
   name: string;
   phone: string;
   company: string;
+  consent?: {
+    privacyPolicy: boolean;
+    dataTransfer: boolean;
+  };
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -14,7 +18,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { name, phone, company } = req.body as LeadData;
+  const { name, phone, company, consent } = req.body as LeadData;
 
   // Validate required fields
   const errors: string[] = [];
@@ -27,17 +31,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!company || company.trim() === '') {
     errors.push('Компания обязательна');
   }
+  
+  // Validate consent - privacy policy consent is required
+  if (!consent || !consent.privacyPolicy) {
+    errors.push('Необходимо согласие с политикой обработки персональных данных');
+  }
 
   if (errors.length > 0) {
     return res.status(400).json({ message: 'Validation failed', errors });
   }
 
   // Sanitize inputs
- const sanitizedData = {
-    name: name.trim(),
+  const sanitizedData = {
+     name: name.trim(),
+     phone: phone.trim(),
+     company: company.trim(),
+     consent: consent
+  };
+  
+  // Log consent data
+  const consentLogData = {
+    timestamp: new Date().toISOString(),
+    userAgent: req.headers['user-agent'] || 'UNKNOWN',
+    formType: 'lead_form',
+    email: null, // No email field in this form
     phone: phone.trim(),
-    company: company.trim()
- };
+    consents: consent,
+    policyVersion: '2025-10-15' // Current policy version
+  };
+ 
+  // Get real IP address from headers
+  const realIp = req.headers['x-forwarded-for'] as string ||
+                 req.headers['x-real-ip'] as string ||
+                 req.connection?.remoteAddress ||
+                 'UNKNOWN';
+ 
+  console.log('Consent log entry from lead API:', {
+    ...consentLogData,
+    ip: realIp
+  });
+ 
+  // In a real implementation, you would save this data to a database
+  // For now, we'll just log it to the console
 
   try {
     // Send Telegram notification only
@@ -83,7 +118,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 async function sendTelegramMessage(data: LeadData) {
   try {
     console.log('Attempting to send Telegram message with data:', data);
-    const message = `Новая заявка: Имя — ${data.name}, Телефон — ${data.phone}, Компания — ${data.company}`;
+    const consentInfo = data.consent
+      ? `\n\nСогласия:\n- Политика конфиденциальности: ${data.consent.privacyPolicy ? 'Да' : 'Нет'}\n- Передача данных третьим лицам: ${data.consent.dataTransfer ? 'Да' : 'Нет'}`
+      : '\n\nСогласия: Не указаны';
+      
+    const message = `Новая заявка: Имя — ${data.name}, Телефон — ${data.phone}, Компания — ${data.company}${consentInfo}`;
     
     const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',

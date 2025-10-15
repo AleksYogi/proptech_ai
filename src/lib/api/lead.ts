@@ -1,10 +1,16 @@
 // This is a client-side utility for making API requests
 // The actual API endpoint will be created in the api/ directory for Vercel
 
+export interface ConsentData {
+  privacyPolicy: boolean;
+  dataTransfer: boolean;
+}
+
 export interface LeadData {
   name: string;
   phone: string;
   company: string;
+  consent?: ConsentData;
 }
 
 export interface LeadResponse {

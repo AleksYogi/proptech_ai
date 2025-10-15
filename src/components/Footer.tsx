@@ -140,8 +140,21 @@ const Footer = () => {
                   {link.name}
                 </a>
               ))}
+              {/* Cookie Settings Link */}
+              <button
+                onClick={() => {
+                  if (typeof (window as any).openCookiePreferences === 'function') {
+                    (window as any).openCookiePreferences();
+                  } else {
+                    console.warn('Cookie preferences function not available');
+                  }
+                }}
+                className="text-primary-foreground/60 hover:text-primary-foreground transition-colors text-sm hover:underline"
+              >
+                Настройки cookies
+              </button>
             </div>
-
+            
             {/* Copyright */}
             <div className="text-primary-foreground/60 text-sm text-center lg:text-right">
               <p>© 2024 Proptech_ai. Все права защищены.</p>

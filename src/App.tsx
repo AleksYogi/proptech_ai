@@ -12,6 +12,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import UserAgreement from "./pages/UserAgreement";
 import NdaAgreement from "./pages/NdaAgreement";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
       <Sonner />
       <HelmetProvider>
         <BrowserRouter>
+          <CookieBanner />
           <Routes>
             <Route path="/" element={<Index />} />
             
