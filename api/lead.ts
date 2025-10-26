@@ -71,10 +71,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
  
   // Save consent log to database
   try {
+    console.log('About to dynamically import logConsent function');
     // Dynamically import and use logConsent to prevent module-level errors
     const { logConsent } = await import('../src/lib/database.js');
+    console.log('logConsent function imported successfully, typeof:', typeof logConsent);
     if (typeof logConsent === 'function') {
+      console.log('Calling logConsent with data:', consentLogData);
       const consentResult = await logConsent(consentLogData);
+      console.log('logConsent result:', consentResult);
       if (consentResult.success) {
         console.log('Consent log saved successfully to database');
       } else {

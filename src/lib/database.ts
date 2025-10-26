@@ -36,12 +36,14 @@ export interface ConsentLog {
 
 // Функция для сохранения лога согласия
 export const logConsent = async (consentData: Omit<ConsentLog, 'id' | 'createdAt'>) => {
+  console.log('Attempting to create Supabase client for consent logging');
   const supabase = createSupabaseClient();
   if (!supabase) {
     console.error('Supabase is not configured. Cannot save consent log.');
     return { success: false, error: 'Supabase is not configured' };
   }
 
+  console.log('Supabase client created successfully, attempting to save consent log:', consentData);
   try {
     const { data, error } = await supabase
       .from('consent_logs') // таблица в Supabase
