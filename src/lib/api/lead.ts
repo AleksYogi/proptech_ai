@@ -10,6 +10,7 @@ export interface LeadData {
   name: string;
   phone: string;
   company: string;
+  convenientTime?: string;
   consent?: ConsentData;
 }
 

@@ -7,6 +7,7 @@ interface LeadData {
   name: string;
   phone: string;
   company: string;
+  convenientTime?: string;
   consent?: {
     privacyPolicy: boolean;
     dataTransfer: boolean;
@@ -18,7 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { name, phone, company, consent } = req.body as LeadData;
+  const { name, phone, company, convenientTime, consent } = req.body as LeadData;
 
   // Validate required fields
   const errors: string[] = [];
@@ -46,6 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
      name: name.trim(),
      phone: phone.trim(),
      company: company.trim(),
+     convenientTime: convenientTime ? convenientTime.trim() : undefined,
      consent: consent
   };
   
@@ -122,7 +124,8 @@ async function sendTelegramMessage(data: LeadData) {
       ? `\n\nСогласия:\n- Политика конфиденциальности: ${data.consent.privacyPolicy ? 'Да' : 'Нет'}\n- Передача данных третьим лицам: ${data.consent.dataTransfer ? 'Да' : 'Нет'}`
       : '\n\nСогласия: Не указаны';
       
-    const message = `Новая заявка: Имя — ${data.name}, Телефон — ${data.phone}, Компания — ${data.company}${consentInfo}`;
+    const convenientTimeInfo = data.convenientTime ? `\nУдобное время для связи: ${data.convenientTime}` : '';
+    const message = `Новая заявка: Имя — ${data.name}, Телефон — ${data.phone}, Компания — ${data.company}${convenientTimeInfo}${consentInfo}`;
     
     const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',

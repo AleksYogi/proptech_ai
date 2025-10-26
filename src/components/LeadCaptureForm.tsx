@@ -10,6 +10,7 @@ interface FormData {
   name: string;
   phone: string;
   company: string;
+  convenientTime?: string;
 }
 
 interface ConsentData {
@@ -18,7 +19,7 @@ interface ConsentData {
 }
 
 const LeadCaptureForm = () => {
-  const [formData, setFormData] = useState<FormData>({ name: "", phone: "", company: "" });
+  const [formData, setFormData] = useState<FormData>({ name: "", phone: "", company: "", convenientTime: "" });
   const [consentData, setConsentData] = useState<ConsentData>({
     privacyPolicy: false,
     dataTransfer: false
@@ -85,7 +86,7 @@ const LeadCaptureForm = () => {
       if (response.ok) {
         const result = await response.json();
         setSubmitStatus({ type: 'success', message: 'Заявка успешно отправлена! Скоро с вами свяжутся.' });
-        setFormData({ name: "", phone: "", company: "" }); // Reset form
+        setFormData({ name: "", phone: "", company: "", convenientTime: "" }); // Reset form
         setConsentData({ privacyPolicy: false, dataTransfer: false }); // Reset consent checkboxes
         
         // Log any partial failures
@@ -163,6 +164,18 @@ const LeadCaptureForm = () => {
               onChange={handleChange}
               placeholder="Название вашей компании"
               required
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="convenientTime">Удобное время для связи</Label>
+            <Input
+              id="convenientTime"
+              name="convenientTime"
+              type="time"
+              value={formData.convenientTime}
+              onChange={handleChange}
+              placeholder="Укажите удобное время для звонка"
             />
           </div>
           
