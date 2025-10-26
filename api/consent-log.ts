@@ -1,6 +1,5 @@
 // Vercel API route для логирования согласий пользователей
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { logConsent } from '../src/lib/database';
 
 interface ConsentLogData {
   timestamp: string;
@@ -26,7 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Get real IP address from headers
   const realIp = req.headers['x-forwarded-for'] as string ||
                  req.headers['x-real-ip'] as string ||
-                 req.connection?.remoteAddress ||
+                 req.socket?.remoteAddress ||
                  ip ||
                  'UNKNOWN';
 
@@ -65,20 +64,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.log('Attempting to save consent log to database:', consentLogData);
 
     // Save consent log to database
-    const consentResult = await logConsent(consentLogData);
-    if (consentResult.success) {
-      console.log('Consent log saved successfully to database');
-      return res.status(200).json({
-        message: 'Consent logged successfully',
-        success: true
-      });
-    } else {
-      console.error('Failed to save consent log to database:', consentResult.error);
+    try {
+      // Dynamically import logConsent to prevent module-level errors
+      const { logConsent } = await import('../src/lib/database');
+      const consentResult = await logConsent(consentLogData);
+      if (consentResult.success) {
+        console.log('Consent log saved successfully to database');
+        return res.status(200).json({
+          message: 'Consent logged successfully',
+          success: true
+        });
+      } else {
+        console.error('Failed to save consent log to database:', consentResult.error);
+        // Still return success to the client but log the database error
+        return res.status(200).json({
+          message: 'Consent processed but not saved to database',
+          success: true,
+          warning: 'Consent was not saved to database due to a storage error'
+        });
+      }
+    } catch (error) {
+      console.error('Error saving consent log to database:', error);
       // Still return success to the client but log the database error
       return res.status(200).json({
         message: 'Consent processed but not saved to database',
         success: true,
-        warning: 'Consent was not saved to database due to a storage error'
+        warning: 'Consent was not saved to database due to an import error'
       });
     }
   } catch (error) {
