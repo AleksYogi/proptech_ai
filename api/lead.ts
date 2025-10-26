@@ -3,7 +3,6 @@
 // Также сохраняет лог согласия в базу данных для соответствия 152-ФЗ
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { logConsent } from '../src/lib/database';
 
 interface LeadData {
   name: string;
