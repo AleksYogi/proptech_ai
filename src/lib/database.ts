@@ -1,14 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Создаем Supabase клиент
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// No module-level environment variable access
 
 // Убедимся, что у нас есть необходимые переменные окружения
 // Проверка будет выполнена при каждом вызове функции logConsent
 
 // Create Supabase client function
 const createSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  
   if (!supabaseUrl || !supabaseKey) {
     console.warn('Supabase credentials are not configured. Consent logging will not work.');
     return null;

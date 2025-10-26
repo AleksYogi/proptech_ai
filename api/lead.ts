@@ -58,7 +58,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     timestamp: new Date(),
     ip: req.headers['x-forwarded-for'] as string ||
         req.headers['x-real-ip'] as string ||
-        req.connection?.remoteAddress ||
+        req.socket?.remoteAddress ||
         'UNKNOWN',
     userAgent: req.headers['user-agent'] || 'UNKNOWN',
     formType: 'lead_form',

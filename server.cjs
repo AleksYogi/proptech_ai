@@ -7,28 +7,30 @@ require('dotenv').config({ path: path.resolve(__dirname, '.env.local') });
 // Импортируем Supabase клиент для логирования согласий
 const { createClient } = require('@supabase/supabase-js');
 
-// Создаем Supabase клиент
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-
-// Убедимся, что у нас есть необходимые переменные окружения
-if (!supabaseUrl || !supabaseKey) {
-  console.warn('Supabase credentials are not configured. Consent logging will not work.');
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Function to create Supabase client with environment variables
+const createSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  
+  if (!supabaseUrl || !supabaseKey) {
+    console.warn('Supabase credentials are not configured. Consent logging will not work.');
+    return null;
+  }
+  
+  return createClient(supabaseUrl, supabaseKey);
+};
 
 // Функция для сохранения лога согласия
 const logConsent = async (consentData) => {
   // Create a new Supabase client for this request to avoid connection reuse issues
-  const requestSupabase = createClient(supabaseUrl, supabaseKey);
+  const requestSupabase = createSupabaseClient();
   
-  if (!supabaseUrl || !supabaseKey) {
+  if (!requestSupabase) {
     console.error('Supabase is not configured. Cannot save consent log.');
     return { success: false, error: 'Supabase is not configured' };
   }
 
-  try {
+ try {
     const { data, error } = await requestSupabase
       .from('consent_logs') // таблица в Supabase
       .insert([{
@@ -104,7 +106,7 @@ app.post('/api/lead', async (req, res) => {
     timestamp: new Date(),
     ip: req.headers['x-forwarded-for'] ||
         req.headers['x-real-ip'] ||
-        req.connection?.remoteAddress ||
+        req.socket?.remoteAddress ||
         'UNKNOWN',
     userAgent: req.headers['user-agent'] || 'UNKNOWN',
     formType: 'lead_form',

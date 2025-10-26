@@ -2,9 +2,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 
-// Create Supabase client for this request
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// No module-level environment variable access
 
 interface ConsentWithdrawData {
   email?: string;
@@ -31,6 +29,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     // Create Supabase client for this request
+    // Access environment variables at runtime
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+    
     if (!supabaseUrl || !supabaseKey) {
       console.error('Supabase credentials are not configured. Consent withdrawal will not work.');
       return res.status(500).json({ message: 'Supabase is not configured' });
