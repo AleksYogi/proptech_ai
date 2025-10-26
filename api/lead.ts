@@ -4,6 +4,7 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+// Оставим LeadData без изменений, так как это интерфейс для данных формы, а не для базы данных
 interface LeadData {
   name: string;
   phone: string;
@@ -59,12 +60,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         req.headers['x-real-ip'] as string ||
         req.socket?.remoteAddress ||
         'UNKNOWN',
-    userAgent: req.headers['user-agent'] || 'UNKNOWN',
-    formType: 'lead_form',
+    user_agent: req.headers['user-agent'] || 'UNKNOWN',
+    form_type: 'lead_form',
     email: null, // No email field in this form
     phone: phone.trim(),
     consents: consent || { privacyPolicy: false },
-    policyVersion: '2025-10-15' // Current policy version
+    policy_version: '2025-10-15' // Current policy version
   };
  
   console.log('Attempting to save consent log to database:', consentLogData);

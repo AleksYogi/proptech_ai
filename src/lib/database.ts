@@ -21,16 +21,16 @@ const createSupabaseClient = () => {
 export interface ConsentLog {
   id?: string;
   timestamp: Date;
-  ip: string;
-  userAgent: string;
-  formType: string;
+ ip: string;
+  user_agent: string;
+  form_type: string;
   email: string | null;
   phone: string;
-  consents: {
+ consents: {
     privacyPolicy: boolean;
     dataTransfer?: boolean;
   };
-  policyVersion: string;
+  policy_version: string;
   created_at?: Date;
 }
 

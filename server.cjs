@@ -36,7 +36,7 @@ const logConsent = async (consentData) => {
       .insert([{
         ...consentData,
         timestamp: consentData.timestamp.toISOString(),
-        createdAt: new Date().toISOString()
+        created_at: new Date().toISOString()
       }]);
 
     if (error) {
@@ -58,10 +58,6 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Импортируем обработчик API из файла
-// Вместо этого реализуем обработчик напрямую
-// const leadHandler = require('./api/lead.js').default;
 
 // API route для обработки заявок
 app.post('/api/lead', async (req, res) => {
@@ -93,7 +89,7 @@ app.post('/api/lead', async (req, res) => {
   }
 
  // Sanitize inputs
- const sanitizedData = {
+  const sanitizedData = {
     name: name.trim(),
     phone: phone.trim(),
     company: company.trim(),
@@ -108,16 +104,16 @@ app.post('/api/lead', async (req, res) => {
         req.headers['x-real-ip'] ||
         req.socket?.remoteAddress ||
         'UNKNOWN',
-    userAgent: req.headers['user-agent'] || 'UNKNOWN',
-    formType: 'lead_form',
+    user_agent: req.headers['user-agent'] || 'UNKNOWN',
+    form_type: 'lead_form',
     email: null, // No email field in this form
     phone: phone.trim(),
     consents: consent || { privacyPolicy: false },
-    policyVersion: '2025-10-15' // Current policy version
+    policy_version: '2025-10-15' // Current policy version
   };
- 
+
   console.log('Attempting to save consent log to database:', consentLogData);
- 
+
   // Save consent log to database
   try {
     const consentResult = await logConsent(consentLogData);
@@ -209,8 +205,8 @@ app.post('/api/consent-withdraw', async (req, res) => {
   const { email, phone, withdrawalReason } = req.body;
 
  // Validate required fields (at least one of email or phone)
- const errors = [];
- if (!email && !phone) {
+  const errors = [];
+  if (!email && !phone) {
     errors.push('Email or phone is required to identify the user');
   }
 
@@ -265,6 +261,7 @@ app.post('/api/consent-withdraw', async (req, res) => {
       error: error.message 
     });
  }
+
 });
 
 // Function to send email using Resend
@@ -346,8 +343,7 @@ async function sendTelegramMessage(data) {
       },
       body: JSON.stringify({
         chat_id: process.env.TELEGRAM_CHAT_ID,
-        text: message,
-        parse_mode: 'HTML'
+        text: message
       }),
     });
 
@@ -369,7 +365,7 @@ async function sendTelegramMessage(data) {
         return { success: false, error: errorText || 'Telegram API error' };
       }
       console.error('Telegram API error:', errorData);
-      return { success: false, error: errorData.description || errorData || 'Telegram API error' };
+      return { success: false, error: errorData.description || 'Telegram API error' };
     }
   } catch (error) {
     console.error('Telegram sending error:', error);

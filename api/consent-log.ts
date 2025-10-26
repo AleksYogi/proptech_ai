@@ -3,16 +3,16 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 interface ConsentLogData {
   timestamp: string;
-  ip?: string; // Optional since we'll get it from headers
-  userAgent: string;
-  formType: string;
+ ip?: string; // Optional since we'll get it from headers
+  user_agent: string;
+  form_type: string;
   email?: string;
   phone?: string;
   consents: {
     privacyPolicy: boolean;
     dataTransfer?: boolean;
   };
-  policyVersion: string;
+  policy_version: string;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -20,7 +20,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { timestamp, ip, userAgent, formType, email, phone, consents, policyVersion } = req.body as ConsentLogData;
+  const { timestamp, ip, user_agent, form_type, email, phone, consents, policy_version } = req.body as ConsentLogData;
 
   // Get real IP address from headers
   const realIp = req.headers['x-forwarded-for'] as string ||
@@ -34,13 +34,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!timestamp) {
     errors.push('Timestamp is required');
   }
-  if (!formType) {
+  if (!form_type) {
     errors.push('Form type is required');
   }
-  if (!consents) {
+ if (!consents) {
     errors.push('Consents data is required');
   }
-  if (!policyVersion) {
+  if (!policy_version) {
     errors.push('Policy version is required');
   }
 
@@ -48,17 +48,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ message: 'Validation failed', errors });
   }
 
-  try {
+ try {
     // Prepare consent log data for database
     const consentLogData = {
       timestamp: new Date(timestamp),
       ip: realIp,
-      userAgent,
-      formType,
+      user_agent,
+      form_type,
       email: email || null,
       phone: phone || '',
       consents,
-      policyVersion
+      policy_version
     };
 
     console.log('Attempting to save consent log to database:', consentLogData);
