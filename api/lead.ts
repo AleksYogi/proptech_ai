@@ -1,7 +1,9 @@
 // Vercel API route для обработки заявок с формы
 // Отправляет уведомления только в Telegram
+// Также сохраняет лог согласия в базу данных для соответствия 152-ФЗ
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { logConsent } from '../src/lib/database';
 
 interface LeadData {
   name: string;
@@ -51,30 +53,35 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
      consent: consent
   };
   
-  // Log consent data
+  // Log consent data to database for 152-ФЗ compliance
   const consentLogData = {
-    timestamp: new Date().toISOString(),
+    timestamp: new Date(),
+    ip: req.headers['x-forwarded-for'] as string ||
+        req.headers['x-real-ip'] as string ||
+        req.connection?.remoteAddress ||
+        'UNKNOWN',
     userAgent: req.headers['user-agent'] || 'UNKNOWN',
     formType: 'lead_form',
     email: null, // No email field in this form
     phone: phone.trim(),
-    consents: consent,
+    consents: consent || { privacyPolicy: false },
     policyVersion: '2025-10-15' // Current policy version
   };
  
-  // Get real IP address from headers
-  const realIp = req.headers['x-forwarded-for'] as string ||
-                 req.headers['x-real-ip'] as string ||
-                 req.connection?.remoteAddress ||
-                 'UNKNOWN';
+  console.log('Attempting to save consent log to database:', consentLogData);
  
-  console.log('Consent log entry from lead API:', {
-    ...consentLogData,
-    ip: realIp
-  });
- 
-  // In a real implementation, you would save this data to a database
-  // For now, we'll just log it to the console
+  // Save consent log to database
+  try {
+    const consentResult = await logConsent(consentLogData);
+    if (consentResult.success) {
+      console.log('Consent log saved successfully to database');
+    } else {
+      console.error('Failed to save consent log to database:', consentResult.error);
+      // Don't fail the entire request if consent logging fails, just log the error
+    }
+ } catch (error) {
+    console.error('Error saving consent log to database:', error);
+  }
 
   try {
     // Send Telegram notification only

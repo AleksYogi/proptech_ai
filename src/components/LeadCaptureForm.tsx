@@ -172,10 +172,10 @@ const LeadCaptureForm = () => {
             <Input
               id="convenientTime"
               name="convenientTime"
-              type="time"
+              type="text"
               value={formData.convenientTime}
               onChange={handleChange}
-              placeholder="Укажите удобное время для звонка"
+              placeholder="Например, завтра после 13:00"
             />
           </div>
           

@@ -1,5 +1,6 @@
 // Vercel API route для логирования согласий пользователей
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { logConsent } from '../src/lib/database';
 
 interface ConsentLogData {
   timestamp: string;
@@ -49,40 +50,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // In a real implementation, you would save this data to a database
-    // For now, we'll just log it to the console and return success
-    
-    console.log('Consent log entry:', {
-      timestamp,
-      ip: realIp,
-      userAgent,
-      formType,
-      email,
-      phone,
-      consents,
-      policyVersion
-    });
-
-    // Simulate saving to database
-    // In a real implementation, you would use a database like PostgreSQL, MySQL, or Firebase
-    /*
-    const result = await db.collection('consent_logs').insertOne({
+    // Prepare consent log data for database
+    const consentLogData = {
       timestamp: new Date(timestamp),
       ip: realIp,
       userAgent,
       formType,
-      email,
-      phone,
+      email: email || null,
+      phone: phone || '',
       consents,
-      policyVersion,
-      createdAt: new Date()
-    });
-    */
+      policyVersion
+    };
 
-    return res.status(200).json({
-      message: 'Consent logged successfully',
-      // id: result.insertedId
-    });
+    console.log('Attempting to save consent log to database:', consentLogData);
+
+    // Save consent log to database
+    const consentResult = await logConsent(consentLogData);
+    if (consentResult.success) {
+      console.log('Consent log saved successfully to database');
+      return res.status(200).json({
+        message: 'Consent logged successfully',
+        success: true
+      });
+    } else {
+      console.error('Failed to save consent log to database:', consentResult.error);
+      // Still return success to the client but log the database error
+      return res.status(200).json({
+        message: 'Consent processed but not saved to database',
+        success: true,
+        warning: 'Consent was not saved to database due to a storage error'
+      });
+    }
   } catch (error) {
     console.error('Error logging consent:', error);
     return res.status(500).json({ message: 'Internal server error', error: (error as Error).message });

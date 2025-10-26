@@ -4,6 +4,49 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '.env.local') });
 
+// Импортируем Supabase клиент для логирования согласий
+const { createClient } = require('@supabase/supabase-js');
+
+// Создаем Supabase клиент
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+// Убедимся, что у нас есть необходимые переменные окружения
+if (!supabaseUrl || !supabaseKey) {
+  console.warn('Supabase credentials are not configured. Consent logging will not work.');
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Функция для сохранения лога согласия
+const logConsent = async (consentData) => {
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('Supabase is not configured. Cannot save consent log.');
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+ try {
+    const { data, error } = await supabase
+      .from('consent_logs') // таблица в Supabase
+      .insert([{
+        ...consentData,
+        timestamp: consentData.timestamp.toISOString(),
+        createdAt: new Date().toISOString()
+      }]);
+
+    if (error) {
+      console.error('Error saving consent log:', error);
+      return { success: false, error: error.message };
+    }
+
+    console.log('Consent log saved successfully:', data);
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error in logConsent:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+};
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -21,9 +64,9 @@ app.post('/api/lead', async (req, res) => {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { name, phone, company } = req.body;
+  const { name, phone, company, convenientTime, consent } = req.body;
 
-  // Validate required fields
+ // Validate required fields
   const errors = [];
   if (!name || name.trim() === '') {
     errors.push('Имя обязательно');
@@ -34,17 +77,54 @@ app.post('/api/lead', async (req, res) => {
   if (!company || company.trim() === '') {
     errors.push('Компания обязательна');
   }
+  
+  // Validate consent - privacy policy consent is required
+  if (!consent || !consent.privacyPolicy) {
+    errors.push('Необходимо согласие с политикой обработки персональных данных');
+  }
 
  if (errors.length > 0) {
     return res.status(400).json({ message: 'Validation failed', errors });
   }
 
-  // Sanitize inputs
+ // Sanitize inputs
  const sanitizedData = {
     name: name.trim(),
     phone: phone.trim(),
-    company: company.trim()
+    company: company.trim(),
+    convenientTime: convenientTime ? convenientTime.trim() : undefined,
+    consent: consent
   };
+  
+  // Log consent data to database for 152-ФЗ compliance
+  const consentLogData = {
+    timestamp: new Date(),
+    ip: req.headers['x-forwarded-for'] ||
+        req.headers['x-real-ip'] ||
+        req.connection?.remoteAddress ||
+        'UNKNOWN',
+    userAgent: req.headers['user-agent'] || 'UNKNOWN',
+    formType: 'lead_form',
+    email: null, // No email field in this form
+    phone: phone.trim(),
+    consents: consent || { privacyPolicy: false },
+    policyVersion: '2025-10-15' // Current policy version
+  };
+ 
+  console.log('Attempting to save consent log to database:', consentLogData);
+ 
+  // Save consent log to database
+  try {
+    const consentResult = await logConsent(consentLogData);
+    if (consentResult.success) {
+      console.log('Consent log saved successfully to database');
+    } else {
+      console.error('Failed to save consent log to database:', consentResult.error);
+      // Don't fail the entire request if consent logging fails, just log the error
+    }
+  } catch (error) {
+    console.error('Error saving consent log to database:', error);
+  }
 
  try {
     // Send email notification
@@ -115,10 +195,87 @@ app.post('/api/lead', async (req, res) => {
   }
 });
 
+// API route для отзыва согласия
+app.post('/api/consent-withdraw', async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
+
+  const { email, phone, withdrawalReason } = req.body;
+
+ // Validate required fields (at least one of email or phone)
+ const errors = [];
+ if (!email && !phone) {
+    errors.push('Email or phone is required to identify the user');
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({ message: 'Validation failed', errors });
+  }
+
+  try {
+    console.log('Attempting to withdraw consent for:', { email, phone });
+
+    // Update consent logs to mark them as withdrawn
+    const updateData = {
+      consents: { privacyPolicy: false, dataTransfer: false }, // Set all consents to false
+      updated_at: new Date().toISOString()
+    };
+
+    if (withdrawalReason) {
+      updateData.withdrawal_reason = withdrawalReason;
+    }
+
+    let updateResult;
+    if (email) {
+      updateResult = await supabase
+        .from('consent_logs')
+        .update(updateData)
+        .eq('email', email);
+    } else if (phone) {
+      updateResult = await supabase
+        .from('consent_logs')
+        .update(updateData)
+        .eq('phone', phone);
+    }
+
+    if (updateResult?.error) {
+      console.error('Error withdrawing consent:', updateResult.error);
+      return res.status(500).json({ 
+        message: 'Failed to withdraw consent', 
+        error: updateResult.error.message 
+      });
+    }
+
+    console.log('Consent withdrawn successfully for:', { email, phone });
+    return res.status(200).json({
+      message: 'Consent withdrawn successfully',
+      success: true
+    });
+
+  } catch (error) {
+    console.error('Error withdrawing consent:', error);
+    return res.status(500).json({ 
+      message: 'Internal server error', 
+      error: error.message 
+    });
+ }
+});
+
 // Function to send email using Resend
 async function sendEmail(data) {
   try {
     console.log('Attempting to send email with data:', data);
+    const consentInfo = data.consent
+      ? `<p><strong>Согласия:</strong></p>
+         <ul>
+           <li>Политика конфиденциальности: ${data.consent.privacyPolicy ? 'Да' : 'Нет'}</li>
+           <li>Передача данных третьим лицам: ${data.consent.dataTransfer ? 'Да' : 'Нет'}</li>
+         </ul>`
+      : '<p><strong>Согласия:</strong> Не указаны</p>';
+      
+    const convenientTimeInfo = data.convenientTime ? `<p><strong>Удобное время для связи:</strong> ${data.convenientTime}</p>` : '';
+    
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -134,6 +291,8 @@ async function sendEmail(data) {
           <p><strong>Имя:</strong> ${data.name}</p>
           <p><strong>Телефон:</strong> ${data.phone}</p>
           <p><strong>Компания:</strong> ${data.company}</p>
+          ${convenientTimeInfo}
+          ${consentInfo}
         `,
       }),
     });
@@ -158,7 +317,12 @@ async function sendEmail(data) {
 async function sendTelegramMessage(data) {
   try {
     console.log('Attempting to send Telegram message with data:', data);
-    const message = `Новая заявка: Имя — ${data.name}, Телефон — ${data.phone}, Компания — ${data.company}`;
+    const consentInfo = data.consent
+      ? `\n\nСогласия:\n- Политика конфиденциальности: ${data.consent.privacyPolicy ? 'Да' : 'Нет'}\n- Передача данных третьим лицам: ${data.consent.dataTransfer ? 'Да' : 'Нет'}`
+      : '\n\nСогласия: Не указаны';
+      
+    const convenientTimeInfo = data.convenientTime ? `\nУдобное время для связи: ${data.convenientTime}` : '';
+    const message = `Новая заявка: Имя — ${data.name}, Телефон — ${data.phone}, Компания — ${data.company}${convenientTimeInfo}${consentInfo}`;
     
     const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
