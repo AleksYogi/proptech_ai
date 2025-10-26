@@ -35,7 +35,8 @@ const Footer = () => {
     { name: "Политика конфиденциальности", href: "/privacy" },
     { name: "Договор оферты", href: "/terms" },
     { name: "Пользовательское соглашение", href: "/agreement" },
-    { name: "ДОГОВОР О НЕРАЗГЛАШЕНИИ (NDA)", href: "/nda" }
+    { name: "ДОГОВОР О НЕРАЗГЛАШЕНИИ (NDA)", href: "/nda" },
+    { name: "Запрос персональных данных", href: "/data-request" }
  ];
 
   return (

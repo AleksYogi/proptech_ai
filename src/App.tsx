@@ -13,6 +13,7 @@ import TermsOfService from "./pages/TermsOfService";
 import UserAgreement from "./pages/UserAgreement";
 import NdaAgreement from "./pages/NdaAgreement";
 import CookieBanner from "./components/CookieBanner";
+import DataRequestPage from "./pages/DataRequestPage";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,9 @@ const App = () => (
             
             {/* Маршрут договора о неразглашении */}
             <Route path="/nda" element={<NdaAgreement />} />
+            
+            {/* Маршрут запроса персональных данных */}
+            <Route path="/data-request" element={<DataRequestPage />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
