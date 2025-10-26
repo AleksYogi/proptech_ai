@@ -20,13 +20,16 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Функция для сохранения лога согласия
 const logConsent = async (consentData) => {
+  // Create a new Supabase client for this request to avoid connection reuse issues
+  const requestSupabase = createClient(supabaseUrl, supabaseKey);
+  
   if (!supabaseUrl || !supabaseKey) {
     console.error('Supabase is not configured. Cannot save consent log.');
     return { success: false, error: 'Supabase is not configured' };
   }
 
- try {
-    const { data, error } = await supabase
+  try {
+    const { data, error } = await requestSupabase
       .from('consent_logs') // таблица в Supabase
       .insert([{
         ...consentData,

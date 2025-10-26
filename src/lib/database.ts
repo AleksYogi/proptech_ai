@@ -5,11 +5,16 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 // Убедимся, что у нас есть необходимые переменные окружения
-if (!supabaseUrl || !supabaseKey) {
-  console.warn('Supabase credentials are not configured. Consent logging will not work.');
-}
+// Проверка будет выполнена при каждом вызове функции logConsent
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Create Supabase client function
+const createSupabaseClient = () => {
+  if (!supabaseUrl || !supabaseKey) {
+    console.warn('Supabase credentials are not configured. Consent logging will not work.');
+    return null;
+  }
+  return createClient(supabaseUrl, supabaseKey);
+};
 
 // Интерфейс для данных согласия
 export interface ConsentLog {
@@ -30,7 +35,8 @@ export interface ConsentLog {
 
 // Функция для сохранения лога согласия
 export const logConsent = async (consentData: Omit<ConsentLog, 'id' | 'createdAt'>) => {
-  if (!supabaseUrl || !supabaseKey) {
+  const supabase = createSupabaseClient();
+  if (!supabase) {
     console.error('Supabase is not configured. Cannot save consent log.');
     return { success: false, error: 'Supabase is not configured' };
   }

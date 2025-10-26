@@ -72,16 +72,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
  
   // Save consent log to database
   try {
-    const consentResult = await logConsent(consentLogData);
-    if (consentResult.success) {
-      console.log('Consent log saved successfully to database');
+    // Check if database is configured before attempting to save
+    if (typeof logConsent === 'function') {
+      const consentResult = await logConsent(consentLogData);
+      if (consentResult.success) {
+        console.log('Consent log saved successfully to database');
+      } else {
+        console.error('Failed to save consent log to database:', consentResult.error);
+        // Don't fail the entire request if consent logging fails, just log the error
+      }
     } else {
-      console.error('Failed to save consent log to database:', consentResult.error);
-      // Don't fail the entire request if consent logging fails, just log the error
+      console.warn('logConsent function not available, skipping consent logging');
     }
  } catch (error) {
     console.error('Error saving consent log to database:', error);
-  }
+    // Don't fail the entire request if consent logging fails, just log the error
+ }
 
   try {
     // Send Telegram notification only
@@ -124,7 +130,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 // Function to send Telegram message
-async function sendTelegramMessage(data: LeadData) {
+const sendTelegramMessage = async (data: LeadData) => {
   try {
     console.log('Attempting to send Telegram message with data:', data);
     const consentInfo = data.consent
@@ -169,4 +175,4 @@ async function sendTelegramMessage(data: LeadData) {
     console.error('Telegram sending error:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown Telegram error' };
   }
-}
+};
