@@ -151,7 +151,17 @@ async function sendTelegramMessage(data: LeadData) {
       console.log('Telegram message sent successfully:', result);
       return { success: true, data: result };
     } else {
-      const errorData = await response.json();
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      let errorData;
+      if (contentType && contentType.includes('application/json')) {
+        errorData = await response.json();
+      } else {
+        // If not JSON, read as text
+        const errorText = await response.text();
+        console.error('Telegram API error (non-JSON):', errorText);
+        return { success: false, error: errorText || 'Telegram API error' };
+      }
       console.error('Telegram API error:', errorData);
       return { success: false, error: errorData.description || 'Telegram API error' };
     }

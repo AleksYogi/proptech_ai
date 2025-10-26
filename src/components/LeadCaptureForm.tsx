@@ -71,7 +71,22 @@ const LeadCaptureForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(consentLogData),
-      }).catch(err => {
+      })
+      .then(response => {
+        if (!response.ok) {
+          // Handle non-JSON responses
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            return response.json();
+          } else {
+            return response.text().then(text => {
+              throw new Error(text || 'Consent logging failed');
+            });
+          }
+        }
+        return response.json();
+      })
+      .catch(err => {
         console.error('Error logging consent:', err);
       });
 
@@ -94,7 +109,16 @@ const LeadCaptureForm = () => {
           console.warn('Partial success:', result.errors);
         }
       } else {
-        const errorResult = await response.json();
+        // Check if response is JSON before parsing
+        const contentType = response.headers.get('content-type');
+        let errorResult;
+        if (contentType && contentType.includes('application/json')) {
+          errorResult = await response.json();
+        } else {
+          // If not JSON, read as text
+          const errorText = await response.text();
+          throw new Error(errorText || 'Network response was not ok');
+        }
         throw new Error(errorResult.message || 'Network response was not ok');
       }
     } catch (error) {

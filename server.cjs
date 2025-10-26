@@ -303,7 +303,17 @@ async function sendEmail(data) {
       console.log('Email sent successfully:', result);
       return { success: true, data: result };
     } else {
-      const errorData = await response.json();
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      let errorData;
+      if (contentType && contentType.includes('application/json')) {
+        errorData = await response.json();
+      } else {
+        // If not JSON, read as text
+        const errorText = await response.text();
+        console.error('Email API error (non-JSON):', errorText);
+        return { success: false, error: errorText || 'Email service error' };
+      }
       console.error('Email API error:', errorData);
       return { success: false, error: errorData.error || errorData.message || 'Email service error' };
     }
@@ -342,9 +352,19 @@ async function sendTelegramMessage(data) {
       console.log('Telegram message sent successfully:', result);
       return { success: true, data: result };
     } else {
-      const errorData = await response.json();
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      let errorData;
+      if (contentType && contentType.includes('application/json')) {
+        errorData = await response.json();
+      } else {
+        // If not JSON, read as text
+        const errorText = await response.text();
+        console.error('Telegram API error (non-JSON):', errorText);
+        return { success: false, error: errorText || 'Telegram API error' };
+      }
       console.error('Telegram API error:', errorData);
-      return { success: false, error: errorData.description || 'Telegram API error' };
+      return { success: false, error: errorData.description || errorData || 'Telegram API error' };
     }
   } catch (error) {
     console.error('Telegram sending error:', error);
