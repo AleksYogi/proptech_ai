@@ -31,11 +31,11 @@ export interface ConsentLog {
     dataTransfer?: boolean;
   };
   policyVersion: string;
-  createdAt?: Date;
+  created_at?: Date;
 }
 
 // Функция для сохранения лога согласия
-export const logConsent = async (consentData: Omit<ConsentLog, 'id' | 'createdAt'>) => {
+export const logConsent = async (consentData: Omit<ConsentLog, 'id' | 'created_at'>) => {
   console.log('Attempting to create Supabase client for consent logging');
   const supabase = createSupabaseClient();
   if (!supabase) {
@@ -50,7 +50,7 @@ export const logConsent = async (consentData: Omit<ConsentLog, 'id' | 'createdAt
       .insert([{
         ...consentData,
         timestamp: consentData.timestamp.toISOString(),
-        createdAt: new Date().toISOString()
+        created_at: new Date().toISOString()
       }]);
 
     if (error) {
